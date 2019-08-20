@@ -10,4 +10,6 @@ RUN apt-get update && apt-get install -y \
     mtools \
  && rm -rf /var/lib/apt/lists/*
 
+ADD https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_amd64 /builder/
+
 COPY . /builder
