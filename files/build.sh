@@ -15,7 +15,7 @@ _get_mac_from_config
 
 _debootstrap
 
-_packets_install
+cat $(dirname $0)/packages_install.sh | chroot $HOME/LIVE_BOOT/chroot
 
 cp /builder/interfaces.config $HOME/LIVE_BOOT/chroot/etc/network/interfaces
 
