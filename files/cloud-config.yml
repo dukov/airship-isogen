@@ -1,0 +1,33 @@
+datasource_list: [ NoCloud, None ]
+network:
+  version: 1
+  config:
+    - type: physical
+      name: id0
+      mac_address: 52:54:00:18:19:c2
+      subnets:
+         - type: static
+           address: 192.168.100.100/24
+           gateway: 192.168.100.1
+#  version: 2
+#  ethernets:
+#    id0:
+#      match:
+#        macaddress: ${ACCESS_MAC_ADDRESS}
+#      dhcp4: false
+#      addresses:
+#        - ${ACCESS_IP_CIDR}
+#      gateway4: ${ACCESS_GW}
+#      nameservers:
+#        addresses: [$DNS_SERVER]
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDEMMYsge3feKSQVDmGEe+14KAthSXWcqVrI+5+QBoO8pu7z6dINGE3w5jatICz9Lm92mXXZN1teM52bCWpDRyjt8L3jKfgHPeHoN6DSbQqKQOYDvl0IsUixUH7f2McSASnwP15ecj0uLXXGLmoqL5OZKje8ldzgS3TDLJDiqM7auYuFx4IggQSay2dX+JfwGv/OW0NeHNCqcv+EQ1LW7Y0rhIDYZ5nZWLjSMiJhvX7kITdBqKHrEUscWrDwSEAd2bCROFDMDxg70P8PkiTmkonaYzOVVDzovHI64SMggfL9zLYHueTsC0yoylWwX/u9WaqK2NaDvyH3zmNuacr6wmz}
+
+runcmd:
+  - [ iptables, -P, FORWARD, ACCEPT ]
+  - [ kubeadm, config, images, pull ]
+  - [ kubeadm, init, --pod-network-cidr=192.168.0.0/24, --ignore-preflight-errors, 'SystemVerification' ]
+  - [ kubectl, --kubeconfig, /etc/kubernetes/admin.conf, apply, -f, 'https://docs.projectcalico.org/v3.8/manifests/calico.yaml' ]
+  - [ kubectl, --kubeconfig, /etc/kubernetes/admin.conf, taint, nodes, --all, node-role.kubernetes.io/master- ]
+  - [ chmod, +r, /etc/kubernetes/admin.conf ]
+  - [ touch, /deployed ]

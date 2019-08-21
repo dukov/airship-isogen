@@ -15,6 +15,7 @@ COPY ./files/interfaces.config /builder/
 COPY ./files/functions.sh /builder/
 COPY ./files/grub.conf /builder/
 COPY ./files/packages_install.sh /builder/
+COPY ./files/cloud-config.yml /config/
 
 ADD https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_amd64 /builder/
 RUN install /builder/yq_linux_amd64 /bin/yq
