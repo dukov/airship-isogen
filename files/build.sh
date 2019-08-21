@@ -26,3 +26,4 @@ cp $CONFIG $HOME/LIVE_BOOT/chroot/etc/cloud/cloud.cfg.d/95_no_cloud_ds.cfg
 _make_kernel
 _grub_install
 _make_iso
+_make_metadata /config/output-metadata.yaml
